@@ -2,13 +2,17 @@ import unittest
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
-
+from selenium.webdriver.chrome.options import Options
 
 class TestLogin(unittest.TestCase):
     def setUp(self):
-        self.browser = webdriver.Chrome(ChromeDriverManager().install())
-
+        self.browser = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        self.browser = webdriver.Chrome(options=options)
+        
     def test_a_success_login(self):
         browser = self.browser
         browser.get("http://barru.pythonanywhere.com/daftar")
@@ -46,7 +50,6 @@ class TestLogin(unittest.TestCase):
             By.ID, "swal2-content").text
         self.assertEqual(respon_welcome, "User's not found")
         self.assertEqual(respon_berhasil, "Email atau Password Anda Salah")
-        #
 
     def test_c_failed_login_empty_email_and_password(self):
         browser = self.browser
@@ -135,25 +138,21 @@ class TestLogin(unittest.TestCase):
         self.assertEqual(respon_welcome, "User's not found")
         self.assertEqual(respon_berhasil, "Email atau Password Anda Salah")
 
-#     #Belum berhasil catch error
-#     def test_h_failed_login_invalid_email_format(self):
-#         browser = self.browser
-#         browser.get("http://barru.pythonanywhere.com/daftar")
-#         time.sleep(1)
-#         browser.find_element(
-#             By.ID, "email").send_keys("nanda@@jagoqa.com")
-#         time.sleep(1)
-#         browser.find_element(By.ID, "password").send_keys("wxsmgswoylgxmgeqzk")
-#         time.sleep(1)
-#         browser.find_element(
-#             By.ID, "signin_login").click()
-#         time.sleep(2)
-#         respon_welcome = browser.find_element(
-#             By.ID, "swal2-title").text
-#         respon_berhasil = browser.find_element(
-#             By.ID, "swal2-content").text
-#         self.assertEqual(respon_welcome, "Oops...")
-#         self.assertEqual(respon_berhasil, "Gagal Login!")
+    def test_h_failed_login_invalid_email_format(self):
+        browser = self.browser
+        browser.get("http://barru.pythonanywhere.com/daftar")
+        time.sleep(1)
+        browser.find_element(
+            By.ID, "email").send_keys("nanda@@jagoqa.com")
+        time.sleep(1)
+        browser.find_element(By.ID, "password").send_keys("wxsmgswoylgxmgeqzk")
+        time.sleep(1)
+        browser.find_element(
+            By.ID, "signin_login").click()
+        time.sleep(2)
+        email_error = browser.find_element(By.ID, "email").get_attribute("validationMessage")
+        print(email_error)
+        self.assertIn("A part following '@' should not contain the symbol '@'.", email_error)
 
     def test_i_failed_login_password_contain_symbol(self):
         browser = self.browser
