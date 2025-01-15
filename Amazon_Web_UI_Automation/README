@@ -1,0 +1,28 @@
+*Amazon Web UI Automation Project*
+
+This repository contains automation tests for the Amazon online shopping website, focusing on the Sign-Up and Sign-In features. The tests are written in Python using Selenium.
+
+**Project Overview**
+
+The project automates the following features:
+- Sign-Up: Testing valid and invalid scenarios.
+- Sign-In: Testing valid and invalid scenarios.
+
+**Prerequisites**
+- Python 3.8+
+- Google Chrome (latest version recommended)
+- ChromeDriver (automatically managed by webdriver-manager)
+
+**How to Run**
+1. Clone the repository
+2. Navigate to the project directory
+3. Install dependencies from requirements.txt
+4. Open a terminal and navigate to the project directory
+5. Execute the following command : python <file name>.py
+
+**Notes on Improvements**
+This project is a work in progress. Here are some potential areas for improvement:
+1. CAPTCHA Handling
+2. Error Handling
+3. Test Coverage
+4. Reporting
